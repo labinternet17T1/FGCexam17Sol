@@ -10,20 +10,10 @@ import javax.persistence.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Station {
 
-    private long id;
-
     private String nom;
 
     private String longitud;
     private String latitud;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getNom() {
         return nom;
@@ -67,7 +57,6 @@ public class Station {
     @Override
     public String toString() {
         return "Station{" +
-                "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", longitud='" + longitud + '\'' +
                 ", latitud='" + latitud + '\'' +

@@ -3,9 +3,11 @@ package cat.tecnocampus.repositories;
 import cat.tecnocampus.domain.Station;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
@@ -40,5 +42,22 @@ public class StationRepository  {
         });
     }
 
+    public List<Station> findAll() {
+
+        return jdbcTemplate.query("SELECT * FROM STATION", new StationMapper());
+    }
+
+    public final class StationMapper implements RowMapper<Station> {
+        @Override
+        public Station mapRow(ResultSet resultSet, int i) throws SQLException {
+            Station station = new Station();
+
+            station.setNom(resultSet.getString("nom"));
+            station.setLatitud(resultSet.getString("latitud"));
+            station.setLongitud(resultSet.getString("longitud"));
+
+            return station;
+        }
+    }
 
 }
