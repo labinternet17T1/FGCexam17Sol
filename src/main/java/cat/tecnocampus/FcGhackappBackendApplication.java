@@ -26,10 +26,14 @@ public class FcGhackappBackendApplication {
 	@Bean
 	CommandLineRunner runner(LaPoblaService laPoblaService, StationRepository stationRepository) throws Exception {
 		return args -> {
+			//adding stations to the database
 			List<Station> stations = laPoblaService.getLaPoblaStations();
-			stations.forEach(s ->System.out.println(s.getNom()));
 
-			stationRepository.saveStations(stations);
+			if (stations != null) {
+				stations.forEach(System.out::println);
+
+				stationRepository.saveStations(stations);
+			}
 		};
 	}
 

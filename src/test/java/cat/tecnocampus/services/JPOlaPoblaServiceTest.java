@@ -1,4 +1,4 @@
-package cat.tecnocampus;
+package cat.tecnocampus.services;
 
 import cat.tecnocampus.domain.Station;
 import cat.tecnocampus.services.HelperJTO;

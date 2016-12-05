@@ -10,20 +10,14 @@ import java.util.List;
 /**
  * Created by roure on 14/11/2016.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
     private String username;
 
     private String name;
     private String secondName;
-    private String thirdName;
 
     private String email;
 
-    private String city;
-    private String postalCode;
-
-    private String token;
     private String password;
 
     public List<FavoriteJourney> favoriteJourneyList;
@@ -49,13 +43,6 @@ public class User implements Serializable {
         this.secondName = secondName;
     }
 
-    public String getThirdName() {
-        return thirdName;
-    }
-
-    public void setThirdName(String thirdName) {
-        this.thirdName = thirdName;
-    }
 
     public String getEmail() {
         return email;
@@ -63,10 +50,6 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getCity() {
-        return city;
     }
 
     public String getUsername() {
@@ -77,25 +60,6 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
 
     public String getPassword() {
         return password;
@@ -119,11 +83,7 @@ public class User implements Serializable {
                 "username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", secondName='" + secondName + '\'' +
-                ", thirdName='" + thirdName + '\'' +
                 ", email='" + email + '\'' +
-                ", city='" + city + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", token='" + token + '\'' +
                 ", password='" + password + '\'' +
                 ", favoriteJourneyList=lazy" +
                 '}';

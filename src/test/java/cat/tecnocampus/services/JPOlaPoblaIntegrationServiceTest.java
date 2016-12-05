@@ -1,4 +1,4 @@
-package cat.tecnocampus;
+package cat.tecnocampus.services;
 
 import cat.tecnocampus.domain.Station;
 import cat.tecnocampus.services.LaPoblaService;
@@ -24,9 +24,9 @@ public class JPOlaPoblaIntegrationServiceTest {
     @Test
     public void serviceIntegrationTest() {
         List<Station> returnedStations = laPoblaService.getLaPoblaStations();
-        assertEquals(returnedStations.size(), 16);
-        assertEquals(returnedStations.get(0).getNom(), "Alcoletge");
-        assertEquals(returnedStations.get(1).getNom(), "Vilanova de la Barca");
+        assertEquals(17, returnedStations.size());
+        assertEquals("Alcoletge", returnedStations.get(0).getNom());
+        assertEquals("Vilanova de la Barca", returnedStations.get(1).getNom());
 
     }
 

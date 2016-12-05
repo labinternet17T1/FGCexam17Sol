@@ -4,6 +4,7 @@ import cat.tecnocampus.domain.Station;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by roure on 30/11/2016.
@@ -17,6 +18,8 @@ public class StationsListJTO {
     }
 
     public void setStations(List<Station> stations) {
-        this.stations = stations;
+
+        this.stations = stations.stream().distinct().collect(Collectors.toList());
+
     }
 }
