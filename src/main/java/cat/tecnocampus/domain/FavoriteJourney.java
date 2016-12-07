@@ -12,7 +12,7 @@ public class FavoriteJourney {
 
     private long id;
 
-    private List<DayTimeStart> StartList;
+    private List<DayTimeStart> startList;
 
     private Journey journey;
 
@@ -25,11 +25,11 @@ public class FavoriteJourney {
     }
 
     public List<DayTimeStart> getStartList() {
-        return StartList;
+        return startList;
     }
 
     public void setStartList(List<DayTimeStart> startList) {
-        StartList = startList;
+        this.startList = startList;
     }
 
     public Journey getJourney() {
@@ -44,7 +44,7 @@ public class FavoriteJourney {
     public String toString() {
         return "FavoriteJourney{" +
                 "id=" + id +
-                ", StartList=" + StartList +
+                //", startList=" + startList +
                 ", journey=" + journey +
                 '}';
     }

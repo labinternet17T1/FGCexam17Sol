@@ -3,9 +3,6 @@ package cat.tecnocampus.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-
 /**
  * Created by roure on 18/11/2016.
  */
@@ -14,10 +11,10 @@ public class DayTimeStart {
 
     private long id;
 
-    @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime begin;
+    @JsonFormat(pattern = "HH:mm")
+    private String begin;
 
-    private DayOfWeek dayOfWeek;
+    private String dayOfWeek;
 
     public long getId() {
         return id;
@@ -27,19 +24,19 @@ public class DayTimeStart {
         this.id = id;
     }
 
-    public LocalTime getBegin() {
+    public String getBegin() {
         return begin;
     }
 
-    public void setBegin(LocalTime begin) {
+    public void setBegin(String begin) {
         this.begin = begin;
     }
 
-    public DayOfWeek getDayOfWeek() {
+    public String getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+    public void setDayOfWeek(String dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 }

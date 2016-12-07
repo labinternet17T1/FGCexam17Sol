@@ -4,9 +4,11 @@ import cat.tecnocampus.domain.Station;
 import cat.tecnocampus.domain.User;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -42,4 +44,28 @@ public class UserRepository {
                 });
     }
 
+    public User findOneUser(String username) {
+        return jdbcTemplate.queryForObject("select * from user where username = ?", new UserMapper(), username);
+    }
+
+    public boolean existsUser(String username) {
+
+        Integer cnt = jdbcTemplate.queryForObject("SELECT count(*) FROM user WHERE username = ?)", Integer.class, username);
+
+        return cnt != null && cnt > 0;
+    }
+
+    private final class UserMapper implements RowMapper<User> {
+        @Override
+        public User mapRow(ResultSet resultSet, int i) throws SQLException {
+            User user = new User();
+
+            user.setUsername(resultSet.getString("username"));
+            user.setName(resultSet.getString("name"));
+            user.setSecondName(resultSet.getString("secondName"));
+            user.setEmail(resultSet.getString("email"));
+
+            return user;
+        }
+    }
 }

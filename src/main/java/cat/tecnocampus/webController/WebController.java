@@ -1,11 +1,16 @@
 package cat.tecnocampus.webController;
 
+import cat.tecnocampus.domain.FavoriteJourney;
+import cat.tecnocampus.domain.User;
+import cat.tecnocampus.domainController.FgcController;
 import cat.tecnocampus.repositories.StationRepository;
+import cat.tecnocampus.repositories.UserRepository;
 import cat.tecnocampus.services.LaPoblaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * Created by roure on 14/11/2016.
@@ -13,18 +18,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class WebController {
 
-    private LaPoblaService laPoblaService;
-    private StationRepository stationRepository;
+    private FgcController fgcController;
 
-    public WebController(LaPoblaService laPoblaService, StationRepository stationRepository) {
-        this.laPoblaService = laPoblaService;
-        this.stationRepository = stationRepository;
+    public WebController(FgcController fgcController) {
+        this.fgcController = fgcController;
     }
 
     @GetMapping("/stations")
     public String getSations(Model model) {
 
-        model.addAttribute("stationList", laPoblaService.getLaPoblaStations());
+        model.addAttribute("stationList", fgcController.getStationsFromApi());
 
         return "stations";
     }
@@ -32,9 +35,21 @@ public class WebController {
     @GetMapping("/users/{username}/add/favoriteJourney")
     public String getAddFavoriteJourney(@PathVariable String username, Model model) {
 
-        model.addAttribute("username", username);
-        model.addAttribute("stationList", stationRepository.findAll());
+        if (fgcController.existsUser(username)) {
+            model.addAttribute("username", username);
 
-        return "newFavoriteJourney";
+            return "newFavoriteJourney";
+        } else {
+            model.addAttribute("username", username);
+            return "error";
+        }
+    }
+
+    @PostMapping("/users/{username}/add/favoriteJourney")
+    public String postAddFavoriteJourney(@PathVariable String username, FavoriteJourney favoriteJourney, Model model) {
+
+        model.addAttribute("favoriteJourney", favoriteJourney);
+
+        return "addedJouney";
     }
 }
