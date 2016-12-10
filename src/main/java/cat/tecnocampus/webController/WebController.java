@@ -37,6 +37,7 @@ public class WebController {
 
         if (fgcController.existsUser(username)) {
             model.addAttribute("username", username);
+            model.addAttribute("stationList", fgcController.getStationsFromRepository());
 
             return "newFavoriteJourney";
         } else {
@@ -48,8 +49,16 @@ public class WebController {
     @PostMapping("/users/{username}/add/favoriteJourney")
     public String postAddFavoriteJourney(@PathVariable String username, FavoriteJourney favoriteJourney, Model model) {
 
+        fgcController.addUserFavoriteJourney(username, favoriteJourney);
         model.addAttribute("favoriteJourney", favoriteJourney);
 
-        return "addedJouney";
+        return "redirect:/users/{username}/favoriteJourneys";
+    }
+
+    @GetMapping("/users/{username}/favoriteJourneys")
+    public String getFavoriteJourneys(@PathVariable String username, Model model) {
+        model.addAttribute("username", username);
+        model.addAttribute("favoriteJourneys", fgcController.getFavoriteJourneys(username));
+        return "favoriteJourneys";
     }
 }

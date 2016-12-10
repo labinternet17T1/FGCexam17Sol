@@ -2,6 +2,7 @@ package cat.tecnocampus.repositories;
 
 import cat.tecnocampus.domain.Station;
 import cat.tecnocampus.domain.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -49,10 +50,13 @@ public class UserRepository {
     }
 
     public boolean existsUser(String username) {
-
-        Integer cnt = jdbcTemplate.queryForObject("SELECT count(*) FROM user WHERE username = ?)", Integer.class, username);
-
-        return cnt != null && cnt > 0;
+        try {
+            Integer cnt = jdbcTemplate.queryForObject("SELECT count(*) FROM user WHERE username = ?", Integer.class, username);
+            return cnt > 0;
+        }
+        catch (EmptyResultDataAccessException e) {
+            return false;
+        }
     }
 
     private final class UserMapper implements RowMapper<User> {

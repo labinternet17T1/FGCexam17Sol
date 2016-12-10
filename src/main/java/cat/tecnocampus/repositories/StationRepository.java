@@ -47,6 +47,10 @@ public class StationRepository  {
         return jdbcTemplate.query("SELECT * FROM STATION", new StationMapper());
     }
 
+    public Station findOne(String nom) {
+        return jdbcTemplate.queryForObject("select * from station where nom = ?", new StationMapper(), nom);
+    }
+
     public final class StationMapper implements RowMapper<Station> {
         @Override
         public Station mapRow(ResultSet resultSet, int i) throws SQLException {

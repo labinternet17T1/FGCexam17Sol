@@ -3,28 +3,38 @@ package cat.tecnocampus.domainController;
 import cat.tecnocampus.domain.FavoriteJourney;
 import cat.tecnocampus.domain.Station;
 import cat.tecnocampus.domain.User;
+import cat.tecnocampus.repositories.FavoriteJourneyRepository;
 import cat.tecnocampus.repositories.StationRepository;
 import cat.tecnocampus.repositories.UserRepository;
 import cat.tecnocampus.services.LaPoblaService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by roure on 07/12/2016.
  */
+@Service
 public class FgcController {
     private StationRepository stationRepository;
     private UserRepository userRepository;
     private LaPoblaService laPoblaService;
+    private FavoriteJourneyRepository favoriteJourneyRepository;
 
-    public FgcController(StationRepository stationRepository, UserRepository userRepository, LaPoblaService laPoblaService) {
+    public FgcController(StationRepository stationRepository, UserRepository userRepository, LaPoblaService laPoblaService,
+                         FavoriteJourneyRepository favoriteJourneyRepository) {
         this.stationRepository = stationRepository;
         this.userRepository = userRepository;
         this.laPoblaService = laPoblaService;
+        this.favoriteJourneyRepository = favoriteJourneyRepository;
     }
 
     public List<Station> getStationsFromApi () {
         return laPoblaService.getLaPoblaStations();
+    }
+
+    public List<Station> getStationsFromRepository() {
+        return stationRepository.findAll();
     }
 
     public void saveStations(List<Station> stations) {
@@ -40,6 +50,10 @@ public class FgcController {
     }
 
     public void addUserFavoriteJourney(String username, FavoriteJourney favoriteJourney) {
+        favoriteJourneyRepository.saveFavoriteJourney(favoriteJourney, username);
+    }
 
+    public List<FavoriteJourney> getFavoriteJourneys(String username) {
+        return favoriteJourneyRepository.findFavoriteJourneys(username);
     }
 }
