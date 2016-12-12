@@ -1,18 +1,13 @@
 package cat.tecnocampus;
 
-import cat.tecnocampus.domain.*;
+import cat.tecnocampus.domain.Station;
 import cat.tecnocampus.repositories.StationRepository;
-import cat.tecnocampus.repositories.UserRepository;
 import cat.tecnocampus.services.LaPoblaService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication

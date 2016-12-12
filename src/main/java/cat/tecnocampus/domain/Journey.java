@@ -1,9 +1,5 @@
 package cat.tecnocampus.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-
 /**
  * Created by roure on 14/11/2016.
  */
@@ -46,5 +42,23 @@ public class Journey {
                 ", origin=" + origin +
                 ", destination=" + destination +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Journey journey = (Journey) o;
+
+        if (origin != null ? !origin.equals(journey.origin) : journey.origin != null) return false;
+        return destination != null ? destination.equals(journey.destination) : journey.destination == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = origin != null ? origin.hashCode() : 0;
+        result = 31 * result + (destination != null ? destination.hashCode() : 0);
+        return result;
     }
 }

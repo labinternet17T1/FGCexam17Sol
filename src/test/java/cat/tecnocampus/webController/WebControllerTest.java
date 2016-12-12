@@ -1,21 +1,32 @@
 package cat.tecnocampus.webController;
 
+import cat.tecnocampus.domain.DayTimeStart;
+import cat.tecnocampus.domain.FavoriteJourney;
+import cat.tecnocampus.domain.Journey;
 import cat.tecnocampus.domain.Station;
-import cat.tecnocampus.exception.UserDoesNotExistsException;
+import cat.tecnocampus.domainController.FgcController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.*;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by roure on 05/12/2016.
@@ -28,6 +39,9 @@ public class WebControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private FgcController mockFgcController;
+
     @Test
     public void contextLoads() throws Exception {
         mockMvc.perform(get("/stations"))
@@ -36,27 +50,133 @@ public class WebControllerTest {
 
     @Test
     public void getStationsTest() throws Exception{
+        List<Station> stations = IntStream.range(0, 17)
+                .mapToObj(i -> {Station s = new Station(); s.setNom("estacio " + i);return s;})
+                .collect(Collectors.toList());
+        when(mockFgcController.getStationsFromRepository()).thenReturn(stations);
+
         mockMvc.perform(get("/stations"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("stations"))
                 .andExpect(model().attributeExists("stationList"))
                 .andExpect(model().attribute("stationList", hasSize(17)));
+
+        verify(mockFgcController, times(1)).getStationsFromRepository();
+        verifyNoMoreInteractions(mockFgcController);
     }
 
     @Test
     public void getMessiFavoriteJourneyTest() throws  Exception {
+        when(mockFgcController.existsUser("messi")).thenReturn(true);
+
+        List<FavoriteJourney> journeys = new ArrayList<>();
+        journeys.add(createFavoriteJourney());
+        when(mockFgcController.getFavoriteJourneys("messi")).thenReturn(journeys);
+
         mockMvc.perform(get("/users/messi/favoriteJourneys"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("favoriteJourneys"))
-                .andExpect(model().attributeExists("username", "favoriteJourneys"));
+                .andExpect(model().attributeExists("username", "favoriteJourneys"))
+                .andExpect(model().attribute("username", is("messi")))
+                .andExpect(model().attribute("favoriteJourneys", hasSize(1)))
+                .andExpect(model().attribute("favoriteJourneys", hasItem(
+                        allOf(
+                                hasProperty("journey", hasProperty("origin", hasProperty("nom", is("Tremp")))),
+                                hasProperty("journey", hasProperty("destination", hasProperty("nom", is("La Pobla")))),
+                                hasProperty("startList", hasSize(1))
+                        )
+                )));
+
+        verify(mockFgcController, times(1)).existsUser("messi");
+        verify(mockFgcController, times(1)).getFavoriteJourneys("messi");
+        verifyNoMoreInteractions(mockFgcController);
     }
 
     @Test
-    public void getPepeFavoriteJourneyTest() throws Exception {
-        mockMvc.perform(get("/users/Pepe/favoriteJourneys"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/error/userDoesNotExist"))
-                .andExpect(model().attributeExists("username"));
+    public void getUnknownFavoriteJourneyTest() throws Exception {
+        testUnknownUser(get("/users/unknown/favoriteJourneys"));
     }
 
+    @Test
+    public void getAddMessiFavoriteJourneys() throws Exception{
+        when(mockFgcController.existsUser("messi")).thenReturn(true);
+
+        mockMvc.perform(get("/users/messi/add/favoriteJourney"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("newFavoriteJourney"))
+                .andExpect(model().attributeExists("username", "stationList"))
+                .andExpect(model().attribute("username", is("messi")));
+
+        verify(mockFgcController, times(1)).existsUser("messi");
+        verify(mockFgcController, times(1)).getStationsFromRepository();
+        verifyNoMoreInteractions(mockFgcController);
+    }
+
+    @Test
+    public void getAddUnknownFavoriteJourneys() throws Exception{
+        testUnknownUser(get("/users/unknown/add/favoriteJourney"));
+    }
+
+    @Test
+    public void postAddMessiFavoriteJourneys() throws Exception{
+        FavoriteJourney fj = createFavoriteJourney();
+        when(mockFgcController.existsUser("messi")).thenReturn(true);
+
+        List<FavoriteJourney> journeys = new ArrayList<>();
+        journeys.add(fj);
+        when(mockFgcController.getFavoriteJourneys("messi")).thenReturn(journeys);
+
+        mockMvc.perform(post("/users/messi/add/favoriteJourney")
+                .param("journey.origin.nom", "Tremp")
+                .param("journey.destination.nom", "La Pobla")
+                .param("startList[0].dayOfWeek", "Monday")
+                .param("startList[0].begin", "12:12"))
+                .andExpect(view().name("redirect:/users/{username}/favoriteJourneys"))
+                .andExpect(redirectedUrl("/users/messi/favoriteJourneys"))
+                .andExpect(status().isFound());
+
+        verify(mockFgcController, times(1)).existsUser("messi");
+        verify(mockFgcController, times(1)).addUserFavoriteJourney("messi", fj);
+        verifyNoMoreInteractions(mockFgcController);
+    }
+
+    @Test
+    public void postAddUnknownFavoriteJourneys() throws Exception {
+        testUnknownUser(post("/users/unknown/add/favoriteJourney"));
+    }
+
+    private void testUnknownUser(RequestBuilder requestBuilder) throws Exception {
+        when(mockFgcController.existsUser("unknown")).thenReturn(false);
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(view().name("/error/userDoesNotExist"))
+                .andExpect(model().attribute("username", is("unknown")));
+
+        verify(mockFgcController, times(1)).existsUser("unknown");
+        verifyNoMoreInteractions(mockFgcController);
+    }
+
+    private FavoriteJourney createFavoriteJourney () {
+        Station origin = new Station();
+        origin.setNom("Tremp");
+        Station destination = new Station();
+        destination.setNom("La Pobla");
+
+        Journey j = new Journey();
+        j.setOrigin(origin);
+        j.setDestination(destination);
+
+        ArrayList<DayTimeStart> starts = new ArrayList<>();
+        DayTimeStart start = new DayTimeStart();
+        start.setBegin("12:12");
+        start.setDayOfWeek("Monday");
+        starts.add(start);
+
+        FavoriteJourney fj = new FavoriteJourney();
+        fj.setJourney(j);
+        fj.setStartList(starts);
+
+        return fj;
+    }
 }

@@ -1,9 +1,5 @@
 package cat.tecnocampus.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-
 /**
  * Created by roure on 14/11/2016.
  */

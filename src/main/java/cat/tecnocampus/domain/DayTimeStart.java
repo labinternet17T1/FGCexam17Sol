@@ -1,8 +1,5 @@
 package cat.tecnocampus.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 /**
  * Created by roure on 18/11/2016.
  */
@@ -36,5 +33,23 @@ public class DayTimeStart {
 
     public void setDayOfWeek(String dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DayTimeStart that = (DayTimeStart) o;
+
+        if (begin != null ? !begin.equals(that.begin) : that.begin != null) return false;
+        return dayOfWeek != null ? dayOfWeek.equals(that.dayOfWeek) : that.dayOfWeek == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = begin != null ? begin.hashCode() : 0;
+        result = 31 * result + (dayOfWeek != null ? dayOfWeek.hashCode() : 0);
+        return result;
     }
 }

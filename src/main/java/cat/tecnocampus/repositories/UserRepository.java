@@ -1,6 +1,5 @@
 package cat.tecnocampus.repositories;
 
-import cat.tecnocampus.domain.Station;
 import cat.tecnocampus.domain.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;

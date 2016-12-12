@@ -2,7 +2,6 @@ package cat.tecnocampus.repositories;
 
 import cat.tecnocampus.domain.DayTimeStart;
 import cat.tecnocampus.domain.FavoriteJourney;
-import cat.tecnocampus.domain.Station;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;

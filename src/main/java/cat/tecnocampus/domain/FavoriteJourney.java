@@ -1,7 +1,5 @@
 package cat.tecnocampus.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.List;
 
 /**
@@ -46,5 +44,23 @@ public class FavoriteJourney {
                 //", startList=" + startList +
                 ", journey=" + journey +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FavoriteJourney that = (FavoriteJourney) o;
+
+        if (startList != null ? !startList.equals(that.startList) : that.startList != null) return false;
+        return journey != null ? journey.equals(that.journey) : that.journey == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = startList != null ? startList.hashCode() : 0;
+        result = 31 * result + (journey != null ? journey.hashCode() : 0);
+        return result;
     }
 }

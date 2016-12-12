@@ -1,20 +1,13 @@
 package cat.tecnocampus.webController;
 
 import cat.tecnocampus.domain.FavoriteJourney;
-import cat.tecnocampus.domain.User;
 import cat.tecnocampus.domainController.FgcController;
 import cat.tecnocampus.exception.UserDoesNotExistsException;
-import cat.tecnocampus.repositories.StationRepository;
-import cat.tecnocampus.repositories.UserRepository;
-import cat.tecnocampus.services.LaPoblaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import javax.validation.Valid;
 
 /**
  * Created by roure on 14/11/2016.
@@ -29,9 +22,9 @@ public class WebController {
     }
 
     @GetMapping("/stations")
-    public String getSations(Model model) {
+    public String getStations(Model model) {
 
-        model.addAttribute("stationList", fgcController.getStationsFromApi());
+        model.addAttribute("stationList", fgcController.getStationsFromRepository());
 
         return "stations";
     }
@@ -39,11 +32,7 @@ public class WebController {
     @GetMapping("/users/{username}/add/favoriteJourney")
     public String getAddFavoriteJourney(@PathVariable String username, Model model) {
 
-        if (!fgcController.existsUser(username)) {
-            UserDoesNotExistsException e = new UserDoesNotExistsException("Non existing resource");
-            e.setUsername(username);
-            throw e;
-        }
+        checkUserExists(username);
 
         model.addAttribute("username", username);
         model.addAttribute("stationList", fgcController.getStationsFromRepository());
@@ -54,6 +43,8 @@ public class WebController {
     @PostMapping("/users/{username}/add/favoriteJourney")
     public String postAddFavoriteJourney(@PathVariable String username, FavoriteJourney favoriteJourney, Model model) {
 
+        checkUserExists(username);
+
         fgcController.addUserFavoriteJourney(username, favoriteJourney);
         model.addAttribute("favoriteJourney", favoriteJourney);
 
@@ -62,8 +53,19 @@ public class WebController {
 
     @GetMapping("/users/{username}/favoriteJourneys")
     public String getFavoriteJourneys(@PathVariable String username, Model model) {
+
+        checkUserExists(username);
+
         model.addAttribute("username", username);
         model.addAttribute("favoriteJourneys", fgcController.getFavoriteJourneys(username));
         return "favoriteJourneys";
+    }
+
+    private void checkUserExists(@PathVariable String username) throws UserDoesNotExistsException{
+        if (!fgcController.existsUser(username)) {
+            UserDoesNotExistsException e = new UserDoesNotExistsException("Non existing resource");
+            e.setUsername(username);
+            throw e;
+        }
     }
 }
