@@ -3,6 +3,7 @@ package cat.tecnocampus.domainController;
 import cat.tecnocampus.domain.FavoriteJourney;
 import cat.tecnocampus.domain.Station;
 import cat.tecnocampus.domain.User;
+import cat.tecnocampus.exception.UserDoesNotExistsException;
 import cat.tecnocampus.repositories.FavoriteJourneyRepository;
 import cat.tecnocampus.repositories.StationRepository;
 import cat.tecnocampus.repositories.UserRepository;
@@ -50,10 +51,23 @@ public class FgcController {
     }
 
     public void addUserFavoriteJourney(String username, FavoriteJourney favoriteJourney) {
-        favoriteJourneyRepository.saveFavoriteJourney(favoriteJourney, username);
+        if (existsUser(username)) {
+            favoriteJourneyRepository.saveFavoriteJourney(favoriteJourney, username);
+        }
+        else {
+            UserDoesNotExistsException e = new UserDoesNotExistsException("Non existing resource");
+            e.setUsername(username);
+            throw e;
+        }
     }
 
     public List<FavoriteJourney> getFavoriteJourneys(String username) {
+        if (!existsUser(username)) {
+            UserDoesNotExistsException e = new UserDoesNotExistsException("Non existing resource");
+            e.setUsername(username);
+            throw e;
+        }
+
         return favoriteJourneyRepository.findFavoriteJourneys(username);
     }
 }

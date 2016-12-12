@@ -5,12 +5,12 @@
     <title>Favorite Journeys</title>
 </head>
 <body>
-<h1><div th:text="${username}">username</div>'s Favorite Journeys</h1>
+<h1><span th:text="${username}">username</span>'s Favorite Journeys</h1>
 
 <div th:each="favoriteJourney : ${favoriteJourneys}">
 
-    Origin: <div th:text="${favoriteJourney.journey.origin.nom}"> Origin </div><br/>
-    Destination: <div th:text="${favoriteJourney.journey.destination.nom}"> Destination </div>
+    Origin: <span th:text="${favoriteJourney.journey.origin.nom}"> Origin </span><br/>
+    Destination: <span th:text="${favoriteJourney.journey.destination.nom}"> Destination </span>
     <ul>
         <li th:each="start : ${favoriteJourney.startList}">
             <div th:text="${start.dayOfWeek}"> day </div>

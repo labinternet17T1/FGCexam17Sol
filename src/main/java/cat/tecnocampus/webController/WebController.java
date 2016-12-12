@@ -3,14 +3,18 @@ package cat.tecnocampus.webController;
 import cat.tecnocampus.domain.FavoriteJourney;
 import cat.tecnocampus.domain.User;
 import cat.tecnocampus.domainController.FgcController;
+import cat.tecnocampus.exception.UserDoesNotExistsException;
 import cat.tecnocampus.repositories.StationRepository;
 import cat.tecnocampus.repositories.UserRepository;
 import cat.tecnocampus.services.LaPoblaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 /**
  * Created by roure on 14/11/2016.
@@ -35,15 +39,16 @@ public class WebController {
     @GetMapping("/users/{username}/add/favoriteJourney")
     public String getAddFavoriteJourney(@PathVariable String username, Model model) {
 
-        if (fgcController.existsUser(username)) {
-            model.addAttribute("username", username);
-            model.addAttribute("stationList", fgcController.getStationsFromRepository());
-
-            return "newFavoriteJourney";
-        } else {
-            model.addAttribute("username", username);
-            return "error";
+        if (!fgcController.existsUser(username)) {
+            UserDoesNotExistsException e = new UserDoesNotExistsException("Non existing resource");
+            e.setUsername(username);
+            throw e;
         }
+
+        model.addAttribute("username", username);
+        model.addAttribute("stationList", fgcController.getStationsFromRepository());
+
+        return "newFavoriteJourney";
     }
 
     @PostMapping("/users/{username}/add/favoriteJourney")

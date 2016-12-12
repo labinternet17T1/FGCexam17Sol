@@ -7,7 +7,6 @@ import java.util.List;
 /**
  * Created by roure on 14/11/2016.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class FavoriteJourney {
 
     private long id;

@@ -6,12 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 /**
  * Created by roure on 18/11/2016.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class DayTimeStart {
 
     private long id;
 
-    @JsonFormat(pattern = "HH:mm")
     private String begin;
 
     private String dayOfWeek;

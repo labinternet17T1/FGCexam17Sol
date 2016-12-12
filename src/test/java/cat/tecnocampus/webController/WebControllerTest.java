@@ -1,6 +1,7 @@
 package cat.tecnocampus.webController;
 
 import cat.tecnocampus.domain.Station;
+import cat.tecnocampus.exception.UserDoesNotExistsException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,22 @@ public class WebControllerTest {
                 .andExpect(view().name("stations"))
                 .andExpect(model().attributeExists("stationList"))
                 .andExpect(model().attribute("stationList", hasSize(17)));
+    }
+
+    @Test
+    public void getMessiFavoriteJourneyTest() throws  Exception {
+        mockMvc.perform(get("/users/messi/favoriteJourneys"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("favoriteJourneys"))
+                .andExpect(model().attributeExists("username", "favoriteJourneys"));
+    }
+
+    @Test
+    public void getPepeFavoriteJourneyTest() throws Exception {
+        mockMvc.perform(get("/users/Pepe/favoriteJourneys"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/error/userDoesNotExist"))
+                .andExpect(model().attributeExists("username"));
     }
 
 }

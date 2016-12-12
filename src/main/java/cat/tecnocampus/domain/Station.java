@@ -7,7 +7,6 @@ import javax.persistence.*;
 /**
  * Created by roure on 14/11/2016.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Station {
 
     private String nom;
