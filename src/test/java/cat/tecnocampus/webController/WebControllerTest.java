@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -43,12 +45,14 @@ public class WebControllerTest {
     private FgcController mockFgcController;
 
     @Test
+    @WithMessiUser
     public void contextLoads() throws Exception {
         mockMvc.perform(get("/stations"))
                 .andExpect(status().isOk());
     }
 
     @Test
+    @WithMessiUser
     public void getStationsTest() throws Exception{
         List<Station> stations = IntStream.range(0, 17)
                 .mapToObj(i -> {Station s = new Station(); s.setNom("estacio " + i);return s;})
@@ -66,6 +70,7 @@ public class WebControllerTest {
     }
 
     @Test
+    @WithMessiUser
     public void getMessiFavoriteJourneyTest() throws  Exception {
         when(mockFgcController.existsUser("messi")).thenReturn(true);
 
@@ -93,11 +98,13 @@ public class WebControllerTest {
     }
 
     @Test
+    @WithMockUser(username="unknown", roles={"USER"})
     public void getUnknownFavoriteJourneyTest() throws Exception {
         testUnknownUser(get("/users/unknown/favoriteJourneys"));
     }
 
     @Test
+    @WithMessiUser
     public void getAddMessiFavoriteJourneys() throws Exception{
         when(mockFgcController.existsUser("messi")).thenReturn(true);
 
@@ -113,11 +120,13 @@ public class WebControllerTest {
     }
 
     @Test
+    @WithMockUser(username="unknown", roles={"USER"})
     public void getAddUnknownFavoriteJourneys() throws Exception{
         testUnknownUser(get("/users/unknown/add/favoriteJourney"));
     }
 
     @Test
+    @WithMessiUser
     public void postAddMessiFavoriteJourneys() throws Exception{
         FavoriteJourney fj = createFavoriteJourney();
         when(mockFgcController.existsUser("messi")).thenReturn(true);
@@ -141,9 +150,25 @@ public class WebControllerTest {
     }
 
     @Test
+    @WithMockUser(username="unknown", roles={"USER"})
     public void postAddUnknownFavoriteJourneys() throws Exception {
         testUnknownUser(post("/users/unknown/add/favoriteJourney"));
     }
+
+    @Test
+    @WithAnonymousUser
+    public void testWithAnonymousUser() throws Exception {
+        mockMvc.perform(get("/stations"))
+                .andExpect(redirectedUrl("http://localhost/login"));
+    }
+
+    @Test
+    @WithMockUser("ronaldo")
+    public void testWithInvalidUser() throws Exception {
+        mockMvc.perform(get("/users/messi/favoriteJourney"))
+                .andExpect(status().isForbidden());
+    }
+
 
     private void testUnknownUser(RequestBuilder requestBuilder) throws Exception {
         when(mockFgcController.existsUser("unknown")).thenReturn(false);
