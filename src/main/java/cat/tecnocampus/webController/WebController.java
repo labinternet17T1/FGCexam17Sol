@@ -61,6 +61,12 @@ public class WebController {
         return "favoriteJourneys";
     }
 
+    @GetMapping("/byebye")
+    public String byebye() {
+
+        return "byebye";
+    }
+
     private void checkUserExists(@PathVariable String username) throws UserDoesNotExistsException{
         if (!fgcController.existsUser(username)) {
             UserDoesNotExistsException e = new UserDoesNotExistsException("Non existing resource");
