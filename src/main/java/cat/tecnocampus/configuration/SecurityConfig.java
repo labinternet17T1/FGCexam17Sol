@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .mvcMatchers("/**").permitAll()
                 // order matters. First the most specific, last anyRequest()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()

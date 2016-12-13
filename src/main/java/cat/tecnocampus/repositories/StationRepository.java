@@ -19,13 +19,14 @@ public class StationRepository  {
 
     private final JdbcTemplate jdbcTemplate;
 
+    private final String SQL_INSERT = "INSERT INTO station (longitud, latitud, nom) values(?, ?, ?)";
+
     public StationRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public int[] saveStations(List<Station> stations) {
-        return jdbcTemplate.batchUpdate("INSERT INTO station (longitud, latitud, nom) values(?, ?, ?)",
-                new BatchPreparedStatementSetter() {
+        return jdbcTemplate.batchUpdate(SQL_INSERT, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
                 Station station = stations.get(i);
@@ -48,6 +49,10 @@ public class StationRepository  {
 
     public Station findOne(String nom) {
         return jdbcTemplate.queryForObject("select * from station where nom = ?", new StationMapper(), nom);
+    }
+
+    public int delete(String nom) {
+        return jdbcTemplate.update("delete from station where nom like '" + nom +"%'");
     }
 
     public final class StationMapper implements RowMapper<Station> {
