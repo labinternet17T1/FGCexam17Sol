@@ -14,7 +14,7 @@
     <ul>
         <li th:each="start : ${favoriteJourney.startList}">
             <div th:text="${start.dayOfWeek}"> day </div>
-            <div th:text="${start.begin}"> time </div>
+            <div th:text="${start.timeStart}"> time </div>
         </li>
     </ul>
 </div>

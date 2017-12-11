@@ -58,6 +58,10 @@ public class UserRepository {
         }
     }
 
+    public List<User> getUsers() {
+        return jdbcTemplate.query("SELECT * FROM USER", new UserMapper());
+    }
+
     private final class UserMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -65,8 +69,9 @@ public class UserRepository {
 
             user.setUsername(resultSet.getString("username"));
             user.setName(resultSet.getString("name"));
-            user.setSecondName(resultSet.getString("secondName"));
+            user.setSecondName(resultSet.getString("second_name"));
             user.setEmail(resultSet.getString("email"));
+            user.setPassword(resultSet.getString("password"));
 
             return user;
         }

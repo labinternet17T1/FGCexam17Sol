@@ -5,9 +5,13 @@ import cat.tecnocampus.domainController.FgcController;
 import cat.tecnocampus.exception.UserDoesNotExistsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * Created by roure on 14/11/2016.
@@ -29,32 +33,34 @@ public class WebController {
         return "stations";
     }
 
-    @GetMapping("/users/{username}/add/favoriteJourney")
-    public String getAddFavoriteJourney(@PathVariable String username, Model model) {
+    @GetMapping("/user/favoriteJourney")
+    public String getAddFavoriteJourney(Principal principal, Model model) {
 
-        checkUserExists(username);
-
-        model.addAttribute("username", username);
+        model.addAttribute("username", principal.getName());
         model.addAttribute("stationList", fgcController.getStationsFromRepository());
+        model.addAttribute("favoriteJourney", new FavoriteJourney());
 
         return "newFavoriteJourney";
     }
 
-    @PostMapping("/users/{username}/add/favoriteJourney")
-    public String postAddFavoriteJourney(@PathVariable String username, FavoriteJourney favoriteJourney, Model model) {
+    @PostMapping("/user/favoriteJourney")
+    public String postAddFavoriteJourney(Principal principal, @Valid FavoriteJourney favoriteJourney, Errors errors, Model model) {
 
-        checkUserExists(username);
+        if (errors.hasErrors()) {
+            return "newFavoriteJourney";
+        }
 
-        fgcController.addUserFavoriteJourney(username, favoriteJourney);
+        fgcController.addUserFavoriteJourney(principal.getName(), favoriteJourney);
         model.addAttribute("favoriteJourney", favoriteJourney);
 
-        return "redirect:/users/{username}/favoriteJourneys";
+        return "redirect:/user/favoriteJourneys";
     }
 
-    @GetMapping("/users/{username}/favoriteJourneys")
-    public String getFavoriteJourneys(@PathVariable String username, Model model) {
+    @GetMapping("/user/favoriteJourneys")
+    public String getFavoriteJourneys(Principal principal, Model model) {
+        String username = principal.getName();
 
-        checkUserExists(username);
+        System.out.println("web controller: going to show favorite journeys");
 
         model.addAttribute("username", username);
         model.addAttribute("favoriteJourneys", fgcController.getFavoriteJourneys(username));
@@ -65,6 +71,20 @@ public class WebController {
     public String byebye() {
 
         return "byebye";
+    }
+
+    @GetMapping("/users")
+    public String users(Model model) {
+        model.addAttribute("users", fgcController.getUsers());
+
+        return "users";
+    }
+
+    @GetMapping("/users/{username}")
+    public String user(@PathVariable String username, Model model) {
+        model.addAttribute("tuser", fgcController.getUser(username));
+
+        return "user";
     }
 
     private void checkUserExists(@PathVariable String username) throws UserDoesNotExistsException{

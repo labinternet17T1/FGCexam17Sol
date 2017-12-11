@@ -1,5 +1,6 @@
 package cat.tecnocampus.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +13,14 @@ public class FavoriteJourney {
     private List<DayTimeStart> startList;
 
     private Journey journey;
+
+
+
+    public FavoriteJourney() {
+        startList = new ArrayList<>();
+        startList.add(new DayTimeStart());
+        journey = new Journey();
+    }
 
     public long getId() {
         return id;

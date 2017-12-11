@@ -12,7 +12,6 @@ INSERT INTO user_roles (username, role)
 VALUES ('messi', 'ROLE_USER');
 
 
-/*
 insert into station(latitud, longitud, nom) values('41.65434', '0.685766', 'Lleida-Pirineus');
 insert into station(latitud, longitud, nom) values('41.654221', '0.685937', 'Alcoletge');
 insert into station(latitud, longitud, nom) values('41.687383', '0.72789', 'Vilanova de la Barca');
@@ -30,4 +29,4 @@ insert into station(latitud, longitud, nom) values('41.65434', '0.685766', 'Pala
 insert into station(latitud, longitud, nom) values('41.65434', '0.685766', 'Tremp');
 insert into station(latitud, longitud, nom) values('41.65434', '0.685766', 'Salàs de Pallars');
 insert into station(latitud, longitud, nom) values('41.65434', '0.685766', 'La Pobla de Segur');
-*/
+

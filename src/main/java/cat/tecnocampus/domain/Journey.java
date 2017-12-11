@@ -1,5 +1,7 @@
 package cat.tecnocampus.domain;
 
+import cat.tecnocampus.exception.SameOriginDestinationException;
+
 /**
  * Created by roure on 14/11/2016.
  */
@@ -10,6 +12,16 @@ public class Journey {
     private Station origin;
 
     private Station destination;
+
+    public Journey() {
+        origin = new Station();
+        destination = new Station();
+    }
+
+    public Journey(Station origin, Station destination) {
+        this.origin = origin;
+        this.destination = destination;
+    }
 
     public long getId() {
         return id;
@@ -33,6 +45,10 @@ public class Journey {
 
     public void setDestination(Station destination) {
         this.destination = destination;
+    }
+
+    public boolean sameOriginDestination() {
+        return origin.getNom().equalsIgnoreCase(destination.getNom());
     }
 
     @Override

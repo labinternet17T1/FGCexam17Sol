@@ -10,6 +10,12 @@ public class Station {
     private String longitud;
     private String latitud;
 
+    public Station() {
+        nom = "";
+        longitud = "";
+        latitud = "";
+    }
+
     public String getNom() {
         return nom;
     }

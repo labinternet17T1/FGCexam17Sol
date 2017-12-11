@@ -1,5 +1,8 @@
 package cat.tecnocampus.domain;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 /**
  * Created by roure on 18/11/2016.
  */
@@ -7,9 +10,19 @@ public class DayTimeStart {
 
     private long id;
 
-    private String begin;
+    @NotNull(message = "Start time cannot be null")
+    @Pattern(regexp = "^([0,1][0-9])|(2[0-3]):[0-5][0-9]$", message = "Start time must be hh:mm")
+    private String timeStart;
 
+    @Pattern(regexp = "^Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday$", message = "Must be a day of week")
     private String dayOfWeek;
+
+    public DayTimeStart() {}
+
+    public DayTimeStart(String day, String time) {
+        dayOfWeek = day;
+        timeStart = time;
+    }
 
     public long getId() {
         return id;
@@ -19,12 +32,12 @@ public class DayTimeStart {
         this.id = id;
     }
 
-    public String getBegin() {
-        return begin;
+    public String getTimeStart() {
+        return timeStart;
     }
 
-    public void setBegin(String begin) {
-        this.begin = begin;
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
     }
 
     public String getDayOfWeek() {
@@ -42,13 +55,13 @@ public class DayTimeStart {
 
         DayTimeStart that = (DayTimeStart) o;
 
-        if (begin != null ? !begin.equals(that.begin) : that.begin != null) return false;
+        if (timeStart != null ? !timeStart.equals(that.timeStart) : that.timeStart != null) return false;
         return dayOfWeek != null ? dayOfWeek.equals(that.dayOfWeek) : that.dayOfWeek == null;
     }
 
     @Override
     public int hashCode() {
-        int result = begin != null ? begin.hashCode() : 0;
+        int result = timeStart != null ? timeStart.hashCode() : 0;
         result = 31 * result + (dayOfWeek != null ? dayOfWeek.hashCode() : 0);
         return result;
     }

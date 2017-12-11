@@ -57,12 +57,12 @@ public class FavoriteJourneyRepository {
     }
 
     private int[] saveDayTimeStart(List<DayTimeStart> start, long favoriteJourneyId) {
-        return jdbcTemplate.batchUpdate("INSERT INTO day_time_start(begin, day_of_week, favorite_journey_id) values(?, ?, ?)",
+        return jdbcTemplate.batchUpdate("INSERT INTO day_time_start(timeStart, day_of_week, favorite_journey_id) values(?, ?, ?)",
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
                         DayTimeStart dayTimeStart = start.get(i);
-                        preparedStatement.setString(1, dayTimeStart.getBegin());
+                        preparedStatement.setString(1, dayTimeStart.getTimeStart());
                         preparedStatement.setString(2, dayTimeStart.getDayOfWeek());
                         preparedStatement.setLong(3, favoriteJourneyId);
                     }
@@ -96,7 +96,7 @@ public class FavoriteJourneyRepository {
             DayTimeStart dayTimeStart = new DayTimeStart();
 
             dayTimeStart.setId(resultSet.getLong("daytime_id"));
-            dayTimeStart.setBegin(resultSet.getString("begin"));
+            dayTimeStart.setTimeStart(resultSet.getString("timeStart"));
             dayTimeStart.setDayOfWeek(resultSet.getString("day_of_week"));
 
             return dayTimeStart;

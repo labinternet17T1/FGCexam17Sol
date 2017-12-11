@@ -194,7 +194,7 @@ public class WebControllerTest {
 
         ArrayList<DayTimeStart> starts = new ArrayList<>();
         DayTimeStart start = new DayTimeStart();
-        start.setBegin("12:12");
+        start.setTimeStart("12:12");
         start.setDayOfWeek("Monday");
         starts.add(start);
 
