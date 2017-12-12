@@ -1,5 +1,7 @@
 package cat.tecnocampus.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,7 @@ public class User implements Serializable {
         this.username = username;
     }
 
-
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

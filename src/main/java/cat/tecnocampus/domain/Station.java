@@ -1,10 +1,13 @@
 package cat.tecnocampus.domain;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by roure on 14/11/2016.
  */
 public class Station {
 
+    @NotNull
     private String nom;
 
     private String longitud;

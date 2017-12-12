@@ -2,6 +2,8 @@ package cat.tecnocampus.domain;
 
 import cat.tecnocampus.exception.SameOriginDestinationException;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by roure on 14/11/2016.
  */
@@ -9,8 +11,10 @@ public class Journey {
 
     private long id;
 
+    @NotNull
     private Station origin;
 
+    @NotNull
     private Station destination;
 
     public Journey() {

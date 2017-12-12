@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 
 /**
  * Created by roure on 14/11/2016.
@@ -36,10 +37,7 @@ public class WebController {
     @GetMapping("/user/favoriteJourney")
     public String getAddFavoriteJourney(Principal principal, Model model) {
 
-        model.addAttribute("username", principal.getName());
-        model.addAttribute("stationList", fgcController.getStationsFromRepository());
-        model.addAttribute("favoriteJourney", new FavoriteJourney());
-
+        fillModelForNewFavoriteJourney(model, principal, new FavoriteJourney());
         return "newFavoriteJourney";
     }
 
@@ -47,6 +45,8 @@ public class WebController {
     public String postAddFavoriteJourney(Principal principal, @Valid FavoriteJourney favoriteJourney, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
+            fillModelForNewFavoriteJourney(model, principal, favoriteJourney);
+            System.out.println(errors.getAllErrors());
             return "newFavoriteJourney";
         }
 
@@ -54,6 +54,13 @@ public class WebController {
         model.addAttribute("favoriteJourney", favoriteJourney);
 
         return "redirect:/user/favoriteJourneys";
+    }
+
+    private void fillModelForNewFavoriteJourney(Model model, Principal principal, FavoriteJourney favoriteJourney) {
+        model.addAttribute("username", principal.getName());
+        model.addAttribute("stationList", fgcController.getStationsFromRepository());
+        model.addAttribute("favoriteJourney", favoriteJourney);
+        model.addAttribute("myErrors", new ArrayList<String>());
     }
 
     @GetMapping("/user/favoriteJourneys")

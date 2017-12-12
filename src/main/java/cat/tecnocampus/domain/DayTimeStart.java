@@ -11,7 +11,7 @@ public class DayTimeStart {
     private long id;
 
     @NotNull(message = "Start time cannot be null")
-    @Pattern(regexp = "^([0,1][0-9])|(2[0-3]):[0-5][0-9]$", message = "Start time must be hh:mm")
+    @Pattern(regexp = "^([0,1][0-9]|2[0-3]):[0-5][0-9]$", message = "Start time must be hh:mm")
     private String timeStart;
 
     @Pattern(regexp = "^Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday$", message = "Must be a day of week")

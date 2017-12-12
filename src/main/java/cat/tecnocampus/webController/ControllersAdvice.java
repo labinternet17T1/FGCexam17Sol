@@ -60,20 +60,15 @@ public class ControllersAdvice {
 
     @ExceptionHandler(SameOriginDestinationException.class)
     public String handleSameOriginDestination(Model model, HttpServletRequest request) {
+        ArrayList<String> myErrors = new ArrayList<>();
+        myErrors.add("Origin and destination must be different");
 
         model.addAttribute("username", request.getUserPrincipal().getName());
         model.addAttribute("stationList", fgcController.getStationsFromRepository());
         model.addAttribute("favoriteJourney", buildFavoriteJourney(request));
+        model.addAttribute("myErrors", myErrors);
 
         return "newFavoriteJourney";
-
-/*
-
-        request.getUserPrincipal().getName();
-        model.addAttribute("station", request.getParameter("journey.origin.nom"));
-
-        return "error/sameStation";
-*/
     }
 
     private FavoriteJourney buildFavoriteJourney(HttpServletRequest request) {

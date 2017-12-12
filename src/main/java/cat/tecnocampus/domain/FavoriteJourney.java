@@ -1,5 +1,6 @@
 package cat.tecnocampus.domain;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,10 @@ public class FavoriteJourney {
 
     private long id;
 
+    @Valid
     private List<DayTimeStart> startList;
 
+    @Valid
     private Journey journey;
 
 
