@@ -10,11 +10,23 @@ public class DayTimeStart {
 
     private long id;
 
+    /*
+    TODO 4.0 (Regular expression)
+        * Explain below (in this comment) the meaning of the following regrep experssion: "^([0,1][0-9]|2[0-3]):[0-5][0-9]$"
+        HINT: is a pattern for a time of the day "hh:mm"
+
+        * YOUR ANSWER:
+
+    */
+
+    /*
+    TODO 4.1 (Follow pattern) ensure that the timeStart property follows the above regrep expression (the one in 4.0)
+        HINT
+        * add an annotation
+    */
     @NotNull(message = "Start time cannot be null")
-    @Pattern(regexp = "^([0,1][0-9]|2[0-3]):[0-5][0-9]$", message = "Start time must be hh:mm")
     private String timeStart;
 
-    @Pattern(regexp = "^Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday$", message = "Must be a day of week")
     private String dayOfWeek;
 
     public DayTimeStart() {}

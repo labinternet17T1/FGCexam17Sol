@@ -11,13 +11,9 @@ public class FavoriteJourney {
 
     private long id;
 
-    @Valid
     private List<DayTimeStart> startList;
 
-    @Valid
     private Journey journey;
-
-
 
     public FavoriteJourney() {
         startList = new ArrayList<>();

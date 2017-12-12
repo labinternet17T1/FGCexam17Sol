@@ -41,8 +41,15 @@ public class WebController {
         return "newFavoriteJourney";
     }
 
+    /*
+    TODO 4.2 (Legal form objects) Make sure all "startTime"s of the "favoriteJourney" are correct in the sense that they
+    follow the patterns of the previous TO.DO 4.1
+        HINT
+            * add an annotation in the parameter of the following method
+            * You'll need to add the same annotation in another file/class
+     */
     @PostMapping("/user/favoriteJourney")
-    public String postAddFavoriteJourney(Principal principal, @Valid FavoriteJourney favoriteJourney, Errors errors, Model model) {
+    public String postAddFavoriteJourney(Principal principal, FavoriteJourney favoriteJourney, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
             fillModelForNewFavoriteJourney(model, principal, favoriteJourney);

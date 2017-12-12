@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /*
-    TODO 1 (security): modify the matchers so that
+    TODO 1 (Security): modify the matchers so that
         * /h2-console (and bellow), /stations, /byebye, api (and bellow) should be accessed by the whole world
         * /user (and bellow), /welcome should only be accessed by logged in users
         * /users (and bellow) should only be accessed by ADMIN users

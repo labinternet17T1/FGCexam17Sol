@@ -11,22 +11,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Set;
 
-/**
- * Created by roure on 12/12/2016.
+/*
+    TODO 5 (Exceptions) Make this class cope with Exceptions thrown/caused by the WebController
+    HINT
+        * you'll need different annotations
+        * The next todos state which Exceptions each method needs to capture
+
  */
-@ControllerAdvice
+
 public class ControllersAdvice {
     private static final Logger logger = LoggerFactory.getLogger(ControllersAdvice.class);
     private FgcController fgcController;
@@ -36,19 +36,17 @@ public class ControllersAdvice {
     }
 
     /*
-    This method is called whenever a UserLabUsernameAlreadyExistsException is signalled
-    We can have Advising Controllers that handle exceptions from all the controllers (no just one).
-    The advising controllers must be annotated with @ControllerAdvice and have one or more methods annotated
-    with @ExceptionHandler
+    TODO 5.1  exception UserDoesNotExistsException
      */
-    @ExceptionHandler
     public String handleUserDoesNotExist(UserDoesNotExistsException exception, Model model) {
         model.addAttribute("username", exception.getUsername());
 
         return "/error/userDoesNotExist";
     }
 
-    @ExceptionHandler(EmptyResultDataAccessException.class)
+    /*
+    TODO 5.2  exception UserDoesNotExistsException
+     */
     public String handleUsernameDoesNotExist(Model model, HttpServletRequest request, Exception ex) {
         String url = request.getRequestURL().toString();
 
@@ -58,7 +56,9 @@ public class ControllersAdvice {
         return "error/usernameDoesNotExist";
     }
 
-    @ExceptionHandler(SameOriginDestinationException.class)
+    /*
+    TODO 5.3 exception SameOriginDestinationException
+     */
     public String handleSameOriginDestination(Model model, HttpServletRequest request) {
         ArrayList<String> myErrors = new ArrayList<>();
         myErrors.add("Origin and destination must be different");

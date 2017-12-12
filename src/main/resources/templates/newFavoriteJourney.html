@@ -37,7 +37,15 @@
     HINTS
         * The name property of a station is called "nom"
         * This Thymeleaf template receives a list with all the stations called "stationList"
-        * You'll need to set the "value" and "text" properties of each option with the station name (nom)
+        * You'll need to set the "value" and "text" properties of each "option" with the station name (nom)
+-->
+<!--
+    TODO 7 (Thymeleaf): It's not mandatory. If you do this Todo it will give you an extra-point.
+    This template is given a favoriteJourney when errors are detected so that the user doesn't need to fill again all
+    form fields. Here you are asked to select the origin and destination stations as stated in favoriteJourney.
+    HINT
+        * You'll need to add a "selected" property in each "option"
+        * See the day of the week selection below as an example
 -->
     <label th:class="${#lists.size(myErrors)>0}? 'error'">Origin:</label>
     <select name="journey.origin.nom">
