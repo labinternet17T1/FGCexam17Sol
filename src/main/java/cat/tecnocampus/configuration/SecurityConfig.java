@@ -43,29 +43,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/resources/**");
     }
 
-    //Configure how requests are secured by interceptors
+    /*
+    TODO 1 (security): modify the matchers so that
+        * /h2-console (and bellow), /stations, /byebye, api (and bellow) should be accessed by the whole world
+        * /user (and bellow), /welcome should only be accessed by logged in users
+        * /users (and bellow) should only be accessed by ADMIN users
+        * The rest of links should only be accessed by logged in users
+        * When a user logs in the system always redirects him to welcome. Whe want it to go to the protected resource he
+          was trying to access (when he was not logged in yet)
+     HINT: you may need to modify some of the already existing matchers, delete existing ones and/or add new ones
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                     .mvcMatchers("/**").permitAll()
-                    .antMatchers("/static/**").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
                     .mvcMatchers("/stations").permitAll()
-                    .mvcMatchers("/user/**").authenticated()
-                    .mvcMatchers("/users/**").hasRole("ADMIN")
                     .antMatchers("/byebye").permitAll()
                     .antMatchers("/api/**").permitAll()
-                    .anyRequest().authenticated()
                 .and()
                 .formLogin() //a login form is showed when no authenticated request
+                    .successForwardUrl("/welcome")
                 .and()
                 .rememberMe()
                     .tokenValiditySeconds(2419200)
                     .key("fgc")
                 .and()
                 .logout()
-                .logoutSuccessUrl("/byebye"); //where to go when logout is successful
+                    .logoutSuccessUrl("/byebye"); //where to go when logout is successful
 
         //Required to allow h2-console work
         http

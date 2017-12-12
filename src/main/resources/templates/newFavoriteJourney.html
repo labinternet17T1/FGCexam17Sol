@@ -32,17 +32,21 @@
         </ul>
     </div>
 
-
+<!--
+    TODO 3 (Thymeleaf): In the following selects (origin and destination) station names should be given to the user to choose from
+    HINTS
+        * The name property of a station is called "nom"
+        * This Thymeleaf template receives a list with all the stations called "stationList"
+        * You'll need to set the "value" and "text" properties of each option with the station name (nom)
+-->
     <label th:class="${#lists.size(myErrors)>0}? 'error'">Origin:</label>
     <select name="journey.origin.nom">
-        <option th:each="station : ${stationList}" th:value="${station.nom}" th:text="${station.nom}"
-                th:selected="${station.nom == favoriteJourney.journey.origin.nom}">Station name
+        <option>Station name (nom)
         </option>
     </select>
     <label th:class="${#lists.size(myErrors)>0}? 'error'">Destination:</label>
     <select name="journey.destination.nom">
-        <option th:each="station : ${stationList}" th:value="${station.nom}" th:text="${station.nom}"
-                th:selected="${station.nom == favoriteJourney.journey.destination.nom}">Station name
+        <option>Station name (nom)
         </option>
     </select>
     <br/>

@@ -56,22 +56,14 @@ public class FavoriteJourneyRepository {
         return jdbcTemplate.query("select * from favorite_journey where user_id = ?", new FavoriteJourneyMapper(), username);
     }
 
+    /*
+    TODO 2 (SqlTemplate): this method should insert into the BBDD all the DayTimeStart objects in the given list to the given favoriteJourney
+        HINT:
+        * You can use the following sql statement: "INSERT INTO day_time_start(timeStart, day_of_week, favorite_journey_id) values(?, ?, ?)"
+        * All inserts must be done at once (I don't want an insert for each object in the list)
+     */
     private int[] saveDayTimeStart(List<DayTimeStart> start, long favoriteJourneyId) {
-        return jdbcTemplate.batchUpdate("INSERT INTO day_time_start(timeStart, day_of_week, favorite_journey_id) values(?, ?, ?)",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
-                        DayTimeStart dayTimeStart = start.get(i);
-                        preparedStatement.setString(1, dayTimeStart.getTimeStart());
-                        preparedStatement.setString(2, dayTimeStart.getDayOfWeek());
-                        preparedStatement.setLong(3, favoriteJourneyId);
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return start.size();
-                    }
-        });
+        return new int[]{}; //you'll want to delete this line
     }
 
     private List<DayTimeStart> findDayTimeStart(long favoriteJourneyId) {

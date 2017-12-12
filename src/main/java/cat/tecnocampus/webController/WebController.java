@@ -87,18 +87,16 @@ public class WebController {
         return "users";
     }
 
+    @PostMapping("/welcome")
+    public String welcome(Principal principal, Model model) {
+        model.addAttribute("tuser", fgcController.getUser(principal.getName()));
+        return "welcome";
+    }
+
     @GetMapping("/users/{username}")
     public String user(@PathVariable String username, Model model) {
         model.addAttribute("tuser", fgcController.getUser(username));
 
         return "user";
-    }
-
-    private void checkUserExists(@PathVariable String username) throws UserDoesNotExistsException{
-        if (!fgcController.existsUser(username)) {
-            UserDoesNotExistsException e = new UserDoesNotExistsException("Non existing resource");
-            e.setUsername(username);
-            throw e;
-        }
     }
 }
