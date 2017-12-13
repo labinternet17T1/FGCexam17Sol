@@ -49,6 +49,10 @@ public class WebControllerTest {
     @MockBean
     private FgcController mockFgcController;
 
+    @Autowired
+    private ControllersAdvice controllersAdvice;
+
+
     @Test
     @WithMockUser(username="messi", roles={"USER"})
     public void testListStations() throws Exception {
