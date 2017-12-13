@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 /**
@@ -31,12 +33,12 @@ public class FavoriteJourneyRepositoryTest {
         FavoriteJourney favoriteJourney = createFavoriteJourney();
         final String user = "messi";
 
-        int numFavoritesBefore = favoriteJourneyRepository.findFavoriteJourneys(user).size();
-
         favoriteJourneyRepository.saveFavoriteJourney(favoriteJourney, user);
 
-        int numFavoritesAfter = favoriteJourneyRepository.findFavoriteJourneys(user).size();
-        assertEquals("Expected number of favorites", numFavoritesBefore+1, numFavoritesAfter);
+        ;
+
+        assertTrue("1:1 should be found", favoriteJourneyRepository.findFavoriteJourneys(user).stream()
+                .anyMatch(f -> f.getStartList().stream().anyMatch(s -> s.getTimeStart().equalsIgnoreCase("1:1"))));
     }
 
     public static FavoriteJourney createFavoriteJourney() {
@@ -54,7 +56,7 @@ public class FavoriteJourneyRepositoryTest {
 
         starts = IntStream.range(0, 3)
                 .mapToObj(i -> {
-                    DayTimeStart d = new DayTimeStart("Monday", "" + i); return d;})
+                    DayTimeStart d = new DayTimeStart("Monday", i + ":" + i); return d;})
                 .collect(Collectors.toList());
 
         favoriteJourney.setJourney(journey);
