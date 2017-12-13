@@ -46,9 +46,6 @@ public class WebControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ControllersAdvice controllersAdvice;
-
     @MockBean
     private FgcController mockFgcController;
 
@@ -96,43 +93,4 @@ public class WebControllerTest {
                 .andExpect(redirectedUrl("/user/favoriteJourneys"))
                 .andExpect(model().hasNoErrors());
     }
-
-
-    @Test
-    @WithMockUser(username="messi", roles={"USER"})
-    public void testSameStationsException() throws Exception {
-        this.mockMvc.perform(
-                post("/user/favoriteJourney")
-                        .param("journey.origin.nom", "same")
-                        .param("journey.destination.nom", "same")
-                        .param("startList[0].dayOfWeek", "Monday")
-                        .param("startList[0].timeStart", "11:59")
-        )
-
-                .andExpect(redirectedUrl("newFavoriteJourney"));
-    }
-
-    /*
-    @Test
-    @WithMockUser(username="messi", roles={"USER"})
-    public void testUserUnknownException() throws Exception {
-        FavoriteJourney favoriteJourney = new FavoriteJourney();
-        when(mockFgcController.addUserFavoriteJourney("unknown", favoriteJourney)).
-                thenThrow(new UserDoesNotExistsException("Non existing resource"));
-
-        this.mockMvc.perform(
-                post("/user/favoriteJourney")
-                        .param("journey.origin.nom", "origin")
-                        .param("journey.destination.nom", "destination")
-                        .param("startList[0].dayOfWeek", "Monday")
-                        .param("startList[0].timeStart", "11:59")
-        )
-
-                .andExpect(redirectedUrl("/error/userDoesNotExist"))
-                .andExpect(model().hasNoErrors());
-    }
-
-
-*/
-
 }

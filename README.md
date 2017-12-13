@@ -13,7 +13,7 @@ It's aim is to give some complementary services around FGC lines.
 
 ## Exam completion
 In order to fulfill the exam you'll need to go through 6 different TODOs your'll find in the code. There is an extra TODO (the 7th)
-that may give you an extra point if done.
+that will give you an extra point if done.
 See that each TODO has an explanation of what you need to do and a list of clues (titled "HINT") 
 
 Usually each TODO involves very few lines of code
@@ -37,3 +37,9 @@ The application has already two users:
 * **username**: messi, **password**: messi (with ROLE_USER)
 * **username**: ronaldo, **password**: ronaldo (with ROLE_USER and ROLE_ADMIN)
 
+## Testing
+There are a total of 13 tests. At the beginning of the exam 9 of them fail.
+
+Unfortunately the tests don't cover al the 7 TODOs. It isn't covered TODOs 4.x and 7
+
+By the end of the exam all test should pass. However passing a test doesn't  guarantee the question is correctly answered.
