@@ -48,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .mvcMatchers("/**").permitAll()
                     .antMatchers("/static/**").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
                     .mvcMatchers("/stations").permitAll()

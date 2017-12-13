@@ -56,7 +56,7 @@ public class FgcController {
         return userRepository.existsUser(username);
     }
 
-    public void addUserFavoriteJourney(String username, FavoriteJourney favoriteJourney) {
+    public int addUserFavoriteJourney(String username, FavoriteJourney favoriteJourney) {
         if (favoriteJourney.getJourney().sameOriginDestination()) {
             throw new SameOriginDestinationException();
         }
@@ -68,6 +68,7 @@ public class FgcController {
             e.setUsername(username);
             throw e;
         }
+        return 0;
     }
 
     public List<FavoriteJourney> getFavoriteJourneys(String username) {
