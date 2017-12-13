@@ -35,8 +35,6 @@ public class FavoriteJourneyRepositoryTest {
 
         favoriteJourneyRepository.saveFavoriteJourney(favoriteJourney, user);
 
-        ;
-
         assertTrue("1:1 should be found", favoriteJourneyRepository.findFavoriteJourneys(user).stream()
                 .anyMatch(f -> f.getStartList().stream().anyMatch(s -> s.getTimeStart().equalsIgnoreCase("1:1"))));
     }

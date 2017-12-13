@@ -46,6 +46,9 @@ public class WebControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ControllersAdvice controllersAdvice;
+
     @MockBean
     private FgcController mockFgcController;
 
@@ -94,7 +97,7 @@ public class WebControllerTest {
                 .andExpect(model().hasNoErrors());
     }
 
-/*
+
     @Test
     @WithMockUser(username="messi", roles={"USER"})
     public void testSameStationsException() throws Exception {
@@ -106,10 +109,10 @@ public class WebControllerTest {
                         .param("startList[0].timeStart", "11:59")
         )
 
-                .andExpect(redirectedUrl("newFavoriteJourney"))
-                .andExpect(model().hasNoErrors());
+                .andExpect(redirectedUrl("newFavoriteJourney"));
     }
 
+    /*
     @Test
     @WithMockUser(username="messi", roles={"USER"})
     public void testUserUnknownException() throws Exception {
